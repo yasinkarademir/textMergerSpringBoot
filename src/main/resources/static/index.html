@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Yazlab-2</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body style="margin: 0 20% 0 20%">
+
+
+<form action="/merge" method="post">
+    <label for="inputText">Metin Girin:</label>
+
+
+   <input class="input is-large is-hovered" type="text" id="inputText"><br><br>
+
+    <button type="button" onclick="addText()">Ekle</button>
+    <br><br>
+    <input type="submit" value="Gönder">
+</form>
+
+<ul id="textList">
+</ul>
+
+<script>
+    // metinlerin tutulacağı dizi
+    var textArray = [];
+
+    // input elemanı ve metin listesi için referanslar
+    var inputText = document.getElementById("inputText");
+    var textList = document.getElementById("textList");
+
+    // metin ekleme fonksiyonu
+    function addText() {
+        // input elemanından metni al
+        var text = inputText.value;
+
+        // eğer metin boş değilse diziye ekle ve listeye göster
+        if (text !== "") {
+            textArray.push(text);
+            var li = document.createElement("li");
+            li.appendChild(document.createTextNode(text));
+            textList.appendChild(li);
+            inputText.value = "";
+        }
+    }
+
+    // form submit edildiğinde metinleri sunucuya gönder
+    document.querySelector("form").addEventListener("submit", function (event) {
+        // form verilerini string dizisi olarak birleştir
+        var textArrayInput = document.createElement("input");
+        textArrayInput.setAttribute("type", "hidden");
+        textArrayInput.setAttribute("name", "textArray");
+        textArrayInput.setAttribute("value", textArray.join(","));
+        this.appendChild(textArrayInput);
+
+        // formu gönder
+        return true;
+    });
+</script>
+
+
+<div class="block"></div>
+
+
+<div class="block">
+    <a href="/merged-texts">
+        <button class="button is-primary">Sonuçları Göster</button>
+    </a>
+</div>
+
+
+</body>
+</html>
